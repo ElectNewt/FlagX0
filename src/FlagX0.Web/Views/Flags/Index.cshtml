@@ -1,0 +1,114 @@
+﻿@model FlagIndexViewModel
+
+<a asp-action="create" asp-controller="flags" class="btn btn-primary">Create Flag</a>
+
+
+
+<div class="row">
+	<form asp-action="Index" asp-controller="flags" method="get" class="row row-cols-lg-auto g-3 align-items-center">
+		<div class="col-12">
+			<label class="visually-hidden" for="InlineFromSearch">Search</label>
+			<div class="input-group">
+				<div class="input-group-text">Search</div>
+				<input type="text" asp-for="Pagination.Search" name="search" class="form-control"
+					   id="InlineFromSearch" placeholder="Flag Name">
+			</div>
+		</div>
+
+		<div class="col-12">
+			<label class="visually-hidden" for="inlineFormSelect">Items per page</label>
+
+			<select asp-for="Pagination.PageSize" name="size" class="form-control"
+					asp-items="@(new SelectList(@Model.SelectOptions))">
+				<option>Items Per Page</option>
+			</select>
+		</div>
+
+		<div class="col-12">
+			<button type="submit" class="btn btn-primary">Filter</button>
+		</div>
+	</form>
+</div>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">Flag Name</th>
+			<th scope="col">Active</th>
+			<th scope="col">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var flag in Model.Pagination.Items)
+		{
+			<tr>
+				<th scope="row">@flag.Name</th>
+				<td>
+					<div class="form-check form-switch">
+						<input class="form-check-input" readonly asp-for="@flag.IsEnabled" type="checkbox" role="switch">
+					</div>
+				</td>
+				<td>
+					<a asp-action="delete" asp-controller="flags" asp-route-flagName="@flag.Name"
+					   type="button" class="btn btn-outline-danger">
+						<i class="bi bi-archive"></i>
+					</a>
+					<a asp-action="@flag.Name" asp-controller="flags" type="button" class="btn btn-outline-primary">
+						<i class="bi bi-pencil"></i>
+					</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<nav aria-label="Page navigation example">
+	<ul class="pagination">
+		@if (Model.Pagination.CurrentPage > 1)
+		{
+			<li class="page-item">
+				<a class="page-link" aria-label="Previous" asp-action="index" asp-controller="flags"
+				   asp-route-search="@Model.Pagination.Search" asp-route-page="1"
+				   asp-route-size="@Model.Pagination.PageSize">
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+			</li>
+
+			<li class="page-item">
+				<a href="/flags/@(Model.Pagination.CurrentPage-1)?search=@Model.Pagination.Search&size=@Model.Pagination.PageSize"
+				   class="page-link">@(Model.Pagination.CurrentPage - 1)</a>
+			</li>
+		}
+
+
+		<li class="page-item">
+			<a class="page-link" href="#">@Model.Pagination.CurrentPage</a>
+		</li>
+		@{
+			int totalPages = (int)Math.Ceiling(Model.Pagination.TotalItems / (double)Model.Pagination.PageSize);
+
+			if (Model.Pagination.CurrentPage < totalPages)
+			{
+				<li class="page-item">
+					<a href="@Url.Action("Index", "flags", new {
+					page = Model.Pagination.CurrentPage + 1,
+					size = Model.Pagination.PageSize,
+					search=Model.Pagination.Search
+					})" class="page-link">@(Model.Pagination.CurrentPage + 1)</a>
+				</li>
+			}
+
+			if (Model.Pagination.CurrentPage+1 < totalPages)
+			{
+				<li class="page-item">
+					<a href="/flags/@totalPages?search=@Model.Pagination.Search&size=@Model.Pagination.PageSize"
+					   class="page-link">
+					   <span aria-hidden="true">&raquo;</span>
+					   </a>
+				</li>
+			}
+
+		}
+
+	</ul>
+</nav>

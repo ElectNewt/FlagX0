@@ -1,0 +1,37 @@
+﻿@model SingleFlagViewModel
+
+@if (!string.IsNullOrWhiteSpace(@Model.Message))
+{
+	<div class="alert alert-primary" role="alert">
+		@Model.Message
+	</div>
+}
+
+<form asp-action="@Model.Flag.Name" asp-controller="flags"
+	  method="post" class="row row-cols-lg-auto g-3 align-items-center">
+
+	<div class="col-12">
+		<label class="visually-hidden" for="flagName">
+			Flag Name
+		</label>
+		<div class="input-group">
+			<div class="input-group-text">Flag Name</div>
+			<input type="text" asp-for="Flag.Name" class=" form-control" id="inlineFormInputGroupUsername" placeholder="Flag Name">
+			<input type="hidden" asp-for="Flag.Id"/>
+		</div>
+	</div>
+	<div class="col-12">
+		<div class="form-check form-switch">
+			<input class="form-check-input" asp-for="Flag.IsEnabled" type="checkbox" role="switch">
+		</div>
+	</div>
+	<div class="col-12">
+		<button type="submit" class="btn btn-primary" class="btn btn-outline-primary">Update flag</button>
+	</div>
+
+</form>
+
+
+<a asp-action="delete" asp-controller="flags" asp-route-flagName="@Model.Flag.Name" type="button" class="btn btn-outline-danger">
+	<i class="bi bi-archive"></i> Delete Flag
+</a>
