@@ -16,8 +16,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="8.0.0" />
-    <PackageReference Include="Netmentor.ROP" Version="1.0.15" />
-    <PackageReference Include="Netmentor.ROP.ApiExtensions" Version="1.0.15" />
+    <PackageReference Include="Netmentor.ROP" Version="1.0.16" />
+    <PackageReference Include="Netmentor.ROP.ApiExtensions" Version="1.0.16" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
